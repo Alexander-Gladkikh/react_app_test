@@ -1,5 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import UserEvent from '@testing-library/user-event';
 import App from './App';
+import userEvent from "@testing-library/user-event";
 
 
 describe('TEST APP', () => {
@@ -27,6 +29,19 @@ describe('TEST APP', () => {
     expect(screen.queryByTestId('toggle-elem')).toBeInTheDocument()
     fireEvent.click(btn)
     expect(screen.queryByTestId('toggle-elem')).toBeNull()
+  })
+
+  test('Input event', () => {
+    render(<App />);
+    const input = screen.getByPlaceholderText(/input value/i);
+    expect(screen.queryByTestId('value-elem')).toContainHTML('')
+        // Искусственное событие
+    // fireEvent.input(input, {
+    //   target: {value: '123123'}
+    // })
+    // Близко к пользователю, обрабатываются события события нажатия и тд
+    userEvent.type(input, '123123')
+    expect(screen.queryByTestId('value-elem')).toContainHTML('123123')
   })
 })
 
